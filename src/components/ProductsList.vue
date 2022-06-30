@@ -1,7 +1,7 @@
 <template>
     <section class="catalog">
         <ul class="catalog__list">
-            <ProductItem />
+            <ProductItem v-for='(product, index) in products' :product='product' :key='index' />
         </ul>
         <ul class="catalog__pagination pagination">
             <li class="pagination__item">
@@ -55,11 +55,17 @@
 
 <script>
 import ProductItem from '../components/ProductItem.vue';
+import products from '../data/products';
 
 export default {
     name: 'ProductsList',
     components: {
         ProductItem
+    },
+    data() {
+        return {
+            products: products
+        }
     }
 }
 </script>

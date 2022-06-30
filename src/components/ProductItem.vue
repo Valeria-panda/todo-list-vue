@@ -1,5 +1,5 @@
 <template>
-    <li v-for='(product, index) in products' :key='index' class="catalog__item">
+    <li class="catalog__item">
         <a class="catalog__pic" href="#">
             <img :src="product.image" :alt="product.title">
         </a>
@@ -38,15 +38,15 @@
 </template>
 
 <script>
-import products from '../data/products'
 
 export default {
     name: 'ProductItem',
-    data() {
-        return {
-            products: products
+    props: {
+        product: {
+            required: true,
+            type: Object
         }
-    }
+    },
 }
 </script>
 <style>
