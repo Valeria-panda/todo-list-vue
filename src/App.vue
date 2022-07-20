@@ -1,6 +1,6 @@
 <template>
   <ProductsList :products="products" />
-  <StandartPagination v-model="page" :count="countProducts" :perPage="productsPerPage" />
+  <StandartPagination v-model:page="page" :count="countProducts" :perPage="productsPerPage" />
 </template>
 
 <script>
