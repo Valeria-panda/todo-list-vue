@@ -3,69 +3,22 @@
         <ul class="catalog__list">
             <ProductItem v-for='(product, index) in products' :product='product' :key='index' />
         </ul>
-        <ul class="catalog__pagination pagination">
-            <li class="pagination__item">
-                <a class="pagination__link pagination__link--arrow pagination__link--disabled"
-                    aria-label="Предыдущая страница">
-                    <svg width="8" height="14" fill="currentColor">
-                        <use xlink:href="#icon-arrow-left"></use>
-                    </svg>
-                </a>
-            </li>
-            <li class="pagination__item">
-                <a class="pagination__link pagination__link--current">
-                    1
-                </a>
-            </li>
-            <li class="pagination__item">
-                <a class="pagination__link" href="#">
-                    2
-                </a>
-            </li>
-            <li class="pagination__item">
-                <a class="pagination__link" href="#">
-                    3
-                </a>
-            </li>
-            <li class="pagination__item">
-                <a class="pagination__link" href="#">
-                    4
-                </a>
-            </li>
-            <li class="pagination__item">
-                <a class="pagination__link" href="#">
-                    ...
-                </a>
-            </li>
-            <li class="pagination__item">
-                <a class="pagination__link" href="#">
-                    10
-                </a>
-            </li>
-            <li class="pagination__item">
-                <a class="pagination__link pagination__link--arrow" href="#" aria-label="Следующая страница">
-                    <svg width="8" height="14" fill="currentColor">
-                        <use xlink:href="#icon-arrow-right"></use>
-                    </svg>
-                </a>
-            </li>
-        </ul>
     </section>
 </template>
 
 <script>
 import ProductItem from '../components/ProductItem.vue';
-import products from '../data/products';
 
 export default {
     name: 'ProductsList',
-    components: {
-        ProductItem
+    props: {
+        products: {
+            type: Number,
+            required: true
+        },
     },
-    data() {
-        return {
-            products: products
-        }
+    components: {
+        ProductItem,
     }
 }
 </script>

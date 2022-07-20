@@ -36,9 +36,7 @@
         </ul>
     </li>
 </template>
-
 <script>
-
 export default {
     name: 'ProductItem',
     props: {
@@ -46,7 +44,7 @@ export default {
             required: true,
             type: Object
         }
-    },
+    }
 }
 </script>
 <style>
