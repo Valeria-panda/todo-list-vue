@@ -9,7 +9,7 @@
             </a>
         </li>
         <li class="pagination__item" v-for="pageNumber in countTotalPages" :key="pageNumber">
-            <a @click="paginate(pageNumber)" class="pagination__link"
+            <a @click.prevent="paginate(pageNumber)" class="pagination__link"
                 :class="{ 'pagination__link--current': pageNumber === page }">
                 {{ pageNumber }}
             </a>
@@ -27,11 +27,6 @@
 
 export default {
     name: 'StandartPagination',
-    model: {
-        prop: 'page',
-        event: 'paginate'
-    },
-    emits: ['paginate:page'],
     props: {
         page: {
             type: Number,
@@ -53,7 +48,7 @@ export default {
     },
     methods: {
         paginate(page) {
-            this.$emit('paginate:page', page);
+            this.$emit('update:page', page);
         }
     }
 }
