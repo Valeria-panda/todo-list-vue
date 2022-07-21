@@ -31,8 +31,8 @@ export default {
     name: 'StandartPagination',
     props: {
         page: {
-            type: Number,
-            required: true,
+            type: Function,
+            required: true
         },
         count: {
             type: Function,
@@ -46,6 +46,12 @@ export default {
     computed: {
         countTotalPages() {
             return Math.ceil(this.count / this.perPage);
+        },
+        isInFirstPage() {
+            return this.page === 1;
+        },
+        isInLastPage() {
+            return this.page === this.countTotalPages;
         }
     },
     methods: {
@@ -53,10 +59,14 @@ export default {
             this.$emit('update:page', page);
         },
         onClickNextButton() {
-            this.$emit('update:page', this.page + 1);
+            if (!this.isInLastPage) {
+                this.$emit('update:page', this.page + 1);
+            }
         },
         onClickPrevButton() {
-            this.$emit('update:page', this.page - 1);
+            if (!this.isInFirstPage) {
+                this.$emit('update:page', this.page - 1);
+            }
         }
     }
 }
@@ -79,6 +89,10 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center
+}
+
+.pagination__item {
+    cursor: pointer;
 }
 
 .pagination__item:first-child {
@@ -117,7 +131,7 @@ export default {
 
 .pagination__link--disabled {
     opacity: .6;
-    cursor: not-allowed
+    /* cursor: not-allowed */
 }
 </style>
  
