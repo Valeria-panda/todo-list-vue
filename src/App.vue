@@ -1,10 +1,28 @@
 <template>
-  <ProductsList :products="products" />
-  <StandartPagination v-model:page="page" :count="countProducts" :perPage="productsPerPage" />
+  <main class="content container">
+    <div class="content__top content__top--catalog">
+      <h1 class="content__title">
+        Каталог
+      </h1>
+      <span class="content__info">
+        152 товара
+      </span>
+    </div>
+
+    <div class="content__catalog">
+      <ProductsFilter v-model:price-from="filterPriceFrom" v-model:price-to="filterPriceTo"
+        v-model:category-id="filterCategoryId" />
+      <section class="catalog">
+        <ProductsList :products="products" />
+      </section>
+    </div>
+    <StandartPagination v-model:page="page" :count="countProducts" :perPage="productsPerPage" />
+  </main>
 </template>
 
 <script>
 import ProductsList from './components/ProductsList.vue';
+import ProductsFilter from './components/ProductsFilter.vue';
 import StandartPagination from './components/StandartPagination.vue';
 import products from './data/products';
 
@@ -12,18 +30,35 @@ export default {
   name: 'App',
   components: {
     ProductsList,
-    StandartPagination
+    ProductsFilter,
+    StandartPagination,
   },
   data() {
     return {
+      filterPriceFrom: 5000,
+      filterPriceTo: 0,
+      filterCategoryId: 0,
       page: 1,
-      productsPerPage: 3,
+      productsPerPage: 6,
     }
   },
   computed: {
+    filteredProducts() {
+      let filteredProducts = products;
+      if (this.filterPriceFrom > 0) {
+        filteredProducts = filteredProducts.filter(product => product.price >= this.filterPriceFrom);
+      }
+      if (this.filterPriceTo > 0) {
+        filteredProducts = filteredProducts.filter(product => product.price <= this.filterPriceTo);
+      }
+      if (this.filterCategoryId) {
+        filteredProducts = filteredProducts.filter(product => product.categoryId === this.filterCategoryId);
+      }
+      return filteredProducts;
+    },
     products() {
       const offset = (this.page - 1) * this.productsPerPage;
-      return products.slice(offset, offset + this.productsPerPage);
+      return this.filteredProducts.slice(offset, offset + this.productsPerPage);
     },
     countProducts() {
       return products.length;
