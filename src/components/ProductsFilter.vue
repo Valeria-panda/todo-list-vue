@@ -1,17 +1,15 @@
 <template>
     <aside class="filter">
         <h2 class="filter__title">Фильтры</h2>
-        <form class="filter__form form" action="#" method="get">
+        <form class="filter__form form" action="#" method="get" @submit.prevent="onclickSubmitButton">
             <fieldset class="form__block">
                 <legend class="form__legend">Цена</legend>
                 <label class="form__label form__label--price">
-                    <input @change='onChangePriceFrom()' class="form__input" type="text" name="min-price"
-                        :value="priceFrom">
+                    <input class="form__input" type="text" name="min-price" v-model="currentPriceFrom">
                     <span class="form__value">От</span>
                 </label>
                 <label class="form__label form__label--price">
-                    <input @change='onChangePriceTo()' class="form__input" type="text" name="max-price"
-                        :value="priceTo">
+                    <input class="form__input" type="text" name="max-price" v-model="currentPriceTo">
                     <span class="form__value">До</span>
                 </label>
             </fieldset>
@@ -19,9 +17,9 @@
             <fieldset class="form__block">
                 <legend class="form__legend">Категория</legend>
                 <label class="form__label form__label--select">
-                    <select class="form__select" type="text" name="category" :value="categoryId">
+                    <select class="form__select" type="text" name="category" v-model="currentCategoryId">
                         <option value="0">Все категории</option>
-                        <option :value="category.id" v-for="category in getCategories" :key="category.id">
+                        <option :value="category.id" v-for="category in categories" :key="category.id">
                             {{ category.title }}
                         </option>
                     </select>
@@ -31,50 +29,14 @@
             <fieldset class="form__block">
                 <legend class="form__legend">Цвет</legend>
                 <ul class="colors">
-                    <li class="colors__item">
+                    <li v-for="color in colors" :key="color.id" class="colors__item">
                         <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" name="color" value="#73B6EA" checked="">
-                            <span class="colors__value" style="background-color: #73B6EA;">
+                            <input class="colors__radio sr-only" type="radio" v-model="picked" :value="color.colorCode">
+                            <span class="colors__value" :style="'background-color:' + color.colorCode">
                             </span>
                         </label>
                     </li>
-                    <li class="colors__item">
-                        <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" name="color" value="#FFBE15">
-                            <span class="colors__value" style="background-color: #FFBE15;">
-                            </span>
-                        </label>
-                    </li>
-                    <li class="colors__item">
-                        <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" name="color" value="#939393">
-                            <span class="colors__value" style="background-color: #939393;">
-                            </span></label>
-                    </li>
-                    <li class="colors__item">
-                        <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" name="color" value="#8BE000">
-                            <span class="colors__value" style="background-color: #8BE000;">
-                            </span></label>
-                    </li>
-                    <li class="colors__item">
-                        <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" name="color" value="#FF6B00">
-                            <span class="colors__value" style="background-color: #FF6B00;">
-                            </span></label>
-                    </li>
-                    <li class="colors__item">
-                        <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" name="color" value="#FFF">
-                            <span class="colors__value" style="background-color: #FFF;">
-                            </span></label>
-                    </li>
-                    <li class="colors__item">
-                        <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" name="color" value="#000">
-                            <span class="colors__value" style="background-color: #000;">
-                            </span></label>
-                    </li>
+
                 </ul>
             </fieldset>
 
@@ -141,7 +103,7 @@
             <button class="filter__submit button button--primery" type="submit">
                 Применить
             </button>
-            <button class="filter__reset button button--second" type="button">
+            <button @click.prevent="onClickResetButton" class="filter__reset button button--second" type="button">
                 Сбросить
             </button>
         </form>
@@ -150,34 +112,66 @@
 <script>
 
 import categories from '../data/categories';
+import colors from '../data/colors';
+
 export default {
     name: 'ProductsFilter',
     props: {
-        priceFrom: {
+        filterPriceFrom: {
             type: Number,
             require: true
         },
-        priceTo: {
+        filterPriceTo: {
             type: Number,
             require: true
         },
-        categoryId: {
+        filterCategoryId: {
             type: Number,
+            require: true
+        },
+        filterColorCode: {
+            type: String,
             require: true
         },
     },
-    computed: {
-        getCategories() {
-            return categories;
+    data() {
+        return {
+            currentPriceFrom: this.filterPriceFrom,
+            currentPriceTo: this.filterPriceTo,
+            currentCategoryId: this.filterCategoryId,
+            currentColorCode: this.filterColorCode,
+            picked: this.filterColorCode,
+            colors,
+            categories
         }
     },
+    watch: {
+        filterPriceFrom: function () {
+            this.currentPriceFrom = this.filterPriceFrom;
+        },
+        filterPriceTo: function () {
+            this.currentPriceTo = this.filterPriceTo;
+        },
+        filterCategoryId: function () {
+            this.currentCategoryId = this.filterCategoryId;
+        },
+        filterColorCode: function () {
+            this.currentColorCode = this.filterColorCode;
+        },
+    },
     methods: {
-        onChangePriceFrom() {
-            this.$emit('update:priceFrom', this.priceFrom);
+        onclickSubmitButton() {
+            this.$emit('update:filter-price-from', this.currentPriceFrom);
+            this.$emit('update:filter-price-to', this.currentPriceTo);
+            this.$emit('update:filter-category-id', this.currentCategoryId);
+            this.$emit('update:filter-color-code', this.picked);
         },
-        onChangePriceTo() {
-            this.$emit('update:priceTo', this.priceTo);
-        },
+        onClickResetButton() {
+            this.$emit('update:filter-price-from', 0);
+            this.$emit('update:filter-price-to', 0);
+            this.$emit('update:filter-category-id', 0);
+            this.$emit('update:filter-color-code', 0);
+        }
     }
 }
 </script>

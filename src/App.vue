@@ -10,8 +10,8 @@
     </div>
 
     <div class="content__catalog">
-      <ProductsFilter v-model:price-from="filterPriceFrom" v-model:price-to="filterPriceTo"
-        v-model:category-id="filterCategoryId" />
+      <ProductsFilter v-model:filter-price-from="filterPriceFrom" v-model:filter-price-to="filterPriceTo"
+        v-model:filter-category-id="filterCategoryId" v-model:filter-color-code="filterColorCode" />
       <section class="catalog">
         <ProductsList :products="products" />
       </section>
@@ -38,6 +38,7 @@ export default {
       filterPriceFrom: 5000,
       filterPriceTo: 0,
       filterCategoryId: 0,
+      filterColorCode: '#73b6ea',
       page: 1,
       productsPerPage: 6,
     }
@@ -45,7 +46,8 @@ export default {
   computed: {
     filteredProducts() {
       let filteredProducts = products;
-      if (this.filterPriceFrom > 0) {
+
+      if (this.filterPriceFrom >= 0) {
         filteredProducts = filteredProducts.filter(product => product.price >= this.filterPriceFrom);
       }
       if (this.filterPriceTo > 0) {
@@ -54,6 +56,7 @@ export default {
       if (this.filterCategoryId) {
         filteredProducts = filteredProducts.filter(product => product.categoryId === this.filterCategoryId);
       }
+
       return filteredProducts;
     },
     products() {
@@ -62,6 +65,11 @@ export default {
     },
     countProducts() {
       return products.length;
+    }
+  },
+  watch: {
+    filterPriceFrom: function (val) {
+      console.log(val);
     }
   }
 }

@@ -21,4 +21,7 @@ export default {
 }
 </script>
 <style>
+.catalog__list {
+    background-color: #0000001a;
+}
 </style>
