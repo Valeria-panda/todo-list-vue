@@ -56,7 +56,13 @@ export default {
       if (this.filterCategoryId) {
         filteredProducts = filteredProducts.filter(product => product.categoryId === this.filterCategoryId);
       }
-
+      if (this.filterColorCode) {
+        filteredProducts = filteredProducts.filter(function (product) {
+          product.colorValues.forEach(element => {
+            return element === this.filterColorCode;
+          });
+        });
+      }
       return filteredProducts;
     },
     products() {
@@ -67,11 +73,7 @@ export default {
       return products.length;
     }
   },
-  watch: {
-    filterPriceFrom: function (val) {
-      console.log(val);
-    }
-  }
+
 }
 </script>
 
