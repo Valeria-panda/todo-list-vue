@@ -57,11 +57,7 @@ export default {
         filteredProducts = filteredProducts.filter(product => product.categoryId === this.filterCategoryId);
       }
       if (this.filterColorCode) {
-        filteredProducts = filteredProducts.filter(function (product) {
-          product.colorValues.forEach(element => {
-            return element === this.filterColorCode;
-          });
-        });
+        filteredProducts = filteredProducts.filter(product => product.colorValues.includes(this.filterColorCode));
       }
       return filteredProducts;
     },

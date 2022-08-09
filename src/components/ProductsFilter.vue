@@ -31,7 +31,8 @@
                 <ul class="colors">
                     <li v-for="color in colors" :key="color.id" class="colors__item">
                         <label class="colors__label">
-                            <input class="colors__radio sr-only" type="radio" v-model="picked" :value="color.colorCode">
+                            <input class="colors__radio sr-only" type="radio" v-model="currentColorCode"
+                                :value="color.colorCode">
                             <span class="colors__value" :style="'background-color:' + color.colorCode">
                             </span>
                         </label>
@@ -140,7 +141,6 @@ export default {
             currentPriceTo: this.filterPriceTo,
             currentCategoryId: this.filterCategoryId,
             currentColorCode: this.filterColorCode,
-            picked: this.filterColorCode,
             colors,
             categories
         }
@@ -164,7 +164,7 @@ export default {
             this.$emit('update:filter-price-from', this.currentPriceFrom);
             this.$emit('update:filter-price-to', this.currentPriceTo);
             this.$emit('update:filter-category-id', this.currentCategoryId);
-            this.$emit('update:filter-color-code', this.picked);
+            this.$emit('update:filter-color-code', this.currentColorCode);
         },
         onClickResetButton() {
             this.$emit('update:filter-price-from', 0);

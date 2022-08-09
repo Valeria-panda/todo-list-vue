@@ -11,7 +11,7 @@ export default {
     name: 'ProductsList',
     props: {
         products: {
-            type: Number,
+            type: String,
             required: true
         },
     },
